@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, jsonify, make_response
 
 
 class WebsiteUser(HttpUser):
-    host = "http: // d2w82h7h2b0a64.cloudfront.net"
+    host = "http://d2w82h7h2b0a64.cloudfront.net"
     # host =
     wait_time = between(5, 15)
     cache_hits = 0;
