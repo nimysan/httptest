@@ -13,12 +13,12 @@ class WebsiteUser(HttpUser):
     cache_hits = 0;
     cache_misses = 0;
 
-    @task
-    def my_task(self):
-        print("User instance (%r) executing my_task" % self)
+    # @task
+    # def my_task(self):
+    #     print("User instance (%r) executing my_task" % self)
 
     @task
-    def about(self):
+    def mpd(self):
         url = "/TVD4020/index.mpd"
 
         response = self.client.get(url)
@@ -81,7 +81,7 @@ def locust_init(environment, **kwargs):
                     # to render extremely slowly.
                     report = {"stats": stats_tmp[:500]}
                 return jsonify(report)
-            print(jsonify(stats))
+            # print(jsonify(stats))
             return jsonify(stats)
 
         @extend.route("/extend")
@@ -130,16 +130,15 @@ def on_request(request_type, name, response_time, response_length, response, con
     """
     Event handler that get triggered on every request
     """
-    print(
-        f"request name is {name} and response is {response.headers.get('X-Cache')}")
+    # print(
+    #     f"request name is {name} and response is {response.headers.get('X-Cache')}")
 
     stats.setdefault(name, {"cache-hits": 0,"total_requests": 0})
     # stats.setdefault(name, {"total_requests": 0})
 
     if response.headers.get("X-Cache") == "Hit from cloudfront":
         stats[name]["cache-hits"] += 1
-    else:
-        print(1)
+
 
     stats[name]["total_requests"] += 1
 
