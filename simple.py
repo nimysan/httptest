@@ -7,8 +7,8 @@ from flask import Blueprint, render_template, jsonify, make_response
 
 
 class WebsiteUser(HttpUser):
-    host = "http://d2v7mm0wuwqays.cloudfront.net"
-
+    host = "http: // d2w82h7h2b0a64.cloudfront.net"
+    # host =
     wait_time = between(5, 15)
     cache_hits = 0;
     cache_misses = 0;
@@ -19,7 +19,7 @@ class WebsiteUser(HttpUser):
 
     @task
     def about(self):
-        url = "/mk.html?Expires=1705616400&Signature=HnoM52g1QgV0yoHNxLgU2rUPWsJ-wNLeDnUAMyZCziWwAiHMPFjFeAl5W-5SlAb41YaMwgwf7FQ8nO8jSAklwWI3AdAjwLSYart1nikkOF45CE2hodmBRTfY4I~HV0JB8EeUGPpJDKWndJIZAKmC1AMxAPOP7CqLrdkLiFZSwCJrjwehFYlb8JPR30am4l6lZIGGJR3-ltmGXi818IIBe5N5pRFvigCKV97OTVewgdtmlWA~RUpSQyKog4RRzpsxbHfYsSpKTzJHtaHh~im~DZ7wVf27vsGUrCBZgxMEhXYx5QVBWYI70YXWcRfmPU38se9E6e5i7-UZ02LU9s6-zw__&Key-Pair-Id=K2DRHODBH54YRF"
+        url = "/TVD4020/index.mpd"
 
         response = self.client.get(url)
         if response.headers.get("X-Cache") == "Hit from cloudfront":
