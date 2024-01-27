@@ -5,6 +5,9 @@ from html import escape
 from locust import stats, HttpUser, between, task, events
 from flask import Blueprint, render_template, jsonify, make_response
 from xml.dom import minidom
+import random
+
+
 
 
 class WebsiteUser(HttpUser):
@@ -34,7 +37,8 @@ class WebsiteUser(HttpUser):
 
     @task
     def sample_m4s(self):
-        if len(self.m4s_task) > 0:
+        random_num = random.randint(1, 10000)
+        if len(self.m4s_task) > 0 and random_num == 100:
             url = "/TVC4001/0-" + self.m4s_task + ".m4s"
             print("URL is --->", url)
             response = self.client.get(url)
