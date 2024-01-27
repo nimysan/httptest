@@ -20,9 +20,17 @@ class WebsiteUser(HttpUser):
         url = "/TVC4001/index.mpd"
         response = self.client.get(url)
         print("Response status code:", response.status_code)
-        doc = minidom.parseString(response.text)
-        self.m4s_task = doc.getElementsByTagName("SegmentTemplate")[0].getAttribute("startNumber")
-        print('self.m4s_task ', self.m4s_task)
+        if response.status_code == 200:
+            try:
+                doc = minidom.parseString(response.text)
+                self.m4s_task = doc.getElementsByTagName("SegmentTemplate")[0].getAttribute("startNumber")
+                print('self.m4s_task ', self.m4s_task)
+            except:
+                print('Unexpected error occurred.')
+                self.m4s_task = ""
+
+        else:
+            self.m4s_task = ""
 
     @task
     def sample_m4s(self):
