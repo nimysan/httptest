@@ -19,7 +19,7 @@ class WebsiteUser(HttpUser):
 
     @task
     def mpd(self):
-        url = "/TVD4020/index.mpd"
+        url = "/TVC4001/index.mpd"
 
         response = self.client.get(url)
         if response.headers.get("X-Cache") == "Hit from cloudfront":
