@@ -4,36 +4,33 @@ from time import time
 from html import escape
 from locust import stats, HttpUser, between, task, events
 from flask import Blueprint, render_template, jsonify, make_response
+from xml.dom import minidom
 
 
 class WebsiteUser(HttpUser):
     host = "http://d2w82h7h2b0a64.cloudfront.net"
     # host =
-    wait_time = between(5, 15)
+    wait_time = between(1, 3)
     cache_hits = 0;
     cache_misses = 0;
-
-    # @task
-    # def my_task(self):
-    #     print("User instance (%r) executing my_task" % self)
+    m4s_task = "";
 
     @task
     def mpd(self):
         url = "/TVC4001/index.mpd"
-
         response = self.client.get(url)
-        if response.headers.get("X-Cache") == "Hit from cloudfront":
-            self.cache_hits += 1
-        else:
-            self.cache_misses += 1
+        print("Response status code:", response.status_code)
+        doc = minidom.parseString(response.text)
+        self.m4s_task = doc.getElementsByTagName("SegmentTemplate")[0].getAttribute("startNumber")
+        print('self.m4s_task ', self.m4s_task)
 
-        # self.stats_class.incr()
-    # @events.quitting.add_listener
-    # def _(environment, **kw):
-    #     plt.plot(cache_hit_rate_log)
-    #     plt.title('Cache Hit Rate')
-    #     plt.ylabel('Rate')
-    #     plt.savefig('cache_hit_rate.png')
+    @task
+    def sample_m4s(self):
+        if len(self.m4s_task) > 0:
+            url = "/TVC4001/0-" + self.m4s_task + ".m4s"
+            print("URL is --->", url)
+            response = self.client.get(url)
+            print("Response status code:", response.status_code)
 
 
 stats = {}
@@ -74,7 +71,7 @@ def locust_init(environment, **kwargs):
                     ch = inner_stats["cache-hits"]
                     tr = inner_stats["total_requests"]
                     stats_tmp.append(
-                        {"name": name, "safe_name": escape(name, quote=False), "chnumber": ch, "crate": tr/ch}
+                        {"name": name, "safe_name": escape(name, quote=False), "chnumber": ch, "crate": tr / ch}
                     )
 
                     # Truncate the total number of stats and errors displayed since a large number of rows will cause the app
@@ -133,12 +130,11 @@ def on_request(request_type, name, response_time, response_length, response, con
     # print(
     #     f"request name is {name} and response is {response.headers.get('X-Cache')}")
 
-    stats.setdefault(name, {"cache-hits": 0,"total_requests": 0})
+    stats.setdefault(name, {"cache-hits": 0, "total_requests": 0})
     # stats.setdefault(name, {"total_requests": 0})
 
     if response.headers.get("X-Cache") == "Hit from cloudfront":
         stats[name]["cache-hits"] += 1
-
 
     stats[name]["total_requests"] += 1
 
