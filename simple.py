@@ -13,7 +13,7 @@ import random
 class WebsiteUser(HttpUser):
     host = "http://d2w82h7h2b0a64.cloudfront.net"
     # host =
-    wait_time = between(1, 3)
+    wait_time = between(0.2, 0.4)
     cache_hits = 0;
     cache_misses = 0;
     m4s_task = "";
