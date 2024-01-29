@@ -37,7 +37,7 @@ class WebsiteUser(HttpUser):
 
     @task
     def sample_m4s(self):
-        random_num = random.randint(1, 10000)
+        random_num = random.randint(1, 100000)
         if len(self.m4s_task) > 0 and random_num == 100:
             url = "/TVC4001/0-" + self.m4s_task + ".m4s"
             print("URL is --->", url)
