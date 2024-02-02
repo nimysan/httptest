@@ -32,4 +32,9 @@ python -m http.server 8000
 
 
 ## 转发老唐的视频
-地址： http://52.50.139.233/sample.ts
+转发的EC2地址： http://52.50.139.233/sample.ts
+
+原始视频地址: http://d3plyik7st1zzz.cloudfront.net/TV9527
+转发代码请参考: sample/tsserver.py
+
+> 转发的原因是安全要求， 需要固定IP放行才能访问
